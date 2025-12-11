@@ -16,6 +16,7 @@ export default class LockGuardExtension {
         this._toggleVisibility();
     }
 
+    // Needs unlock-dialog since its goal is hiding panel items on lock screen
     disable() {
         this._toggleVisibility();
     }
