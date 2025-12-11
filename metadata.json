@@ -1,0 +1,15 @@
+{
+  "name": "Lock Guard",
+  "description": "Hide date and quick settings on lock screen for enhanced security and privacy.",
+  "shell-version": [
+    "46",
+    "47",
+    "48",
+    "49"
+  ],
+  "uuid": "lock-guard@fthx",
+  "version": 999,
+  "donations": {
+    "paypal": "fthx75"
+  }
+}
