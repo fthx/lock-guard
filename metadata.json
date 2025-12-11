@@ -8,6 +8,10 @@
     "49"
   ],
   "uuid": "lock-guard@fthx",
+  "url": "https://github.com/fthx/lock-guard",
+  "session-modes": [
+    "unlock-dialog"
+  ],
   "version": 999,
   "donations": {
     "paypal": "fthx75"
