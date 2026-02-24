@@ -18,6 +18,7 @@ export default class LockGuardExtension {
     // Needs unlock-dialog: hiding/locking items on lock screen
     disable() {
         Main.wm._allowedKeybindings = this._originalKeybindings;
+        this._originalKeybindings = null;
 
         Main.panel.statusArea.dateMenu?.show();
         Main.panel.statusArea.quickSettings?.show();
