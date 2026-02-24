@@ -1,11 +1,12 @@
 {
   "name": "Lock Guard",
-  "description": "Hide date and quick settings on lock screen for enhanced security and privacy.",
+  "description": "Remove date, quick settings and keybindings on lock screen for enhanced security and privacy.",
   "shell-version": [
     "46",
     "47",
     "48",
-    "49"
+    "49",
+    "50"
   ],
   "uuid": "lock-guard@fthx",
   "url": "https://github.com/fthx/lock-guard",
