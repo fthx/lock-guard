@@ -1,23 +1,25 @@
 //    Lock Guard
 //    GNOME Shell extension
-//    @fthx 2025
+//    @fthx 2026
 
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 
 export default class LockGuardExtension {
-    _toggleVisibility() {
-        Main.panel.statusArea.dateMenu.visible = !Main.sessionMode.isLocked;
-        Main.panel.statusArea.quickSettings.visible = !Main.sessionMode.isLocked;
-    }
-
     enable() {
-        this._toggleVisibility();
+        this._originalKeybindings = { ...Main.wm._allowedKeybindings };
+        Main.wm._allowedKeybindings = {};
+
+        Main.panel.statusArea.dateMenu?.hide();
+        Main.panel.statusArea.quickSettings?.hide();
     }
 
-    // Needs unlock-dialog since its goal is hiding panel items on lock screen
+    // Needs unlock-dialog: hiding/locking items on lock screen
     disable() {
-        this._toggleVisibility();
+        Main.wm._allowedKeybindings = this._originalKeybindings;
+
+        Main.panel.statusArea.dateMenu?.show();
+        Main.panel.statusArea.quickSettings?.show();
     }
 }
