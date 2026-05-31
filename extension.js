@@ -45,7 +45,7 @@ export default class LockGuardExtension {
         this._originalEnsureAuthPrompt = Main.screenShield._dialog._ensureAuthPrompt;
         Main.screenShield._dialog._ensureAuthPrompt = (...args) => {
             this._originalEnsureAuthPrompt.call(Main.screenShield._dialog, ...args);
-            Main.screenShield._dialog._authPrompt._userVerifier.connectObject(
+            Main.screenShield._dialog._authPrompt?._userVerifier?.connectObject(
                 'verification-failed',
                 () => this._addFailedAttempt(),
                 this);

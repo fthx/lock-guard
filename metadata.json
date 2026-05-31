@@ -2,9 +2,6 @@
   "name": "Lock Guard",
   "description": "Enhanced lock screen security.\n\nHide date.\nHide quick settings.\nInhibit keybindings.\nWarn about 3+ failed login attempts.",
   "shell-version": [
-    "46",
-    "47",
-    "48",
     "49",
     "50"
   ],
