@@ -2,20 +2,21 @@
 //    GNOME Shell extension
 //    @fthx 2026
 
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 
-const MAX_FAILED_ATTEMPTS = 999; // avoid overflow
-const FAILED_ATTEMPTS_TRESHOLD = 3;
+const MAX_FAILED_ATTEMPTS = 999;
+const FAILED_ATTEMPTS_THRESHOLD = 3;
 
-export default class LockGuardExtension {
+export default class LockGuardExtension extends Extension {
     _addFailedAttempt() {
         if (this._failedAttempts < MAX_FAILED_ATTEMPTS)
             this._failedAttempts++;
     }
 
     _notifyFailedAttempts() {
-        if (this._failedAttempts < FAILED_ATTEMPTS_TRESHOLD)
+        if (this._failedAttempts < FAILED_ATTEMPTS_THRESHOLD)
             return;
 
         const source = new MessageTray.Source({
@@ -39,7 +40,10 @@ export default class LockGuardExtension {
         Main.wm._allowedKeybindings = {};
 
         Main.panel.statusArea.dateMenu?.hide();
-        Main.panel.statusArea.quickSettings?.hide();
+        if (Main.panel.statusArea.quickSettings) {
+            Main.panel.statusArea.quickSettings.hide();
+            Main.panel.statusArea.quickSettings.reactive = false;
+        }
 
         this._failedAttempts = 0;
         this._originalEnsureAuthPrompt = Main.screenShield._dialog._ensureAuthPrompt;
@@ -47,18 +51,23 @@ export default class LockGuardExtension {
             this._originalEnsureAuthPrompt.call(Main.screenShield._dialog, ...args);
             Main.screenShield._dialog._authPrompt?._userVerifier?.connectObject(
                 'verification-failed',
-                () => this._addFailedAttempt(),
+                this._addFailedAttempt.bind(this),
                 this);
         };
     }
 
     // Needs unlock-dialog: managing items on lock screen
     disable() {
-        Main.wm._allowedKeybindings = this._originalKeybindings;
-        this._originalKeybindings = null;
+        if (this._originalKeybindings) {
+            Main.wm._allowedKeybindings = this._originalKeybindings;
+            this._originalKeybindings = null;
+        }
 
         Main.panel.statusArea.dateMenu?.show();
-        Main.panel.statusArea.quickSettings?.show();
+        if (Main.panel.statusArea.quickSettings) {
+            Main.panel.statusArea.quickSettings.reactive = true;
+            Main.panel.statusArea.quickSettings.show();
+        }
 
         if (this._originalEnsureAuthPrompt) {
             Main.screenShield._dialog._ensureAuthPrompt = this._originalEnsureAuthPrompt;
