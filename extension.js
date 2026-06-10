@@ -6,7 +6,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 
 const MAX_FAILED_ATTEMPTS = 999; // avoid overflow
-const FAILED_ATTEMPTS_TRESHOLD = 3;
+const FAILED_ATTEMPTS_THRESHOLD = 3;
 
 export default class LockGuardExtension {
     _addFailedAttempt() {
@@ -15,7 +15,7 @@ export default class LockGuardExtension {
     }
 
     _notifyFailedAttempts() {
-        if (this._failedAttempts < FAILED_ATTEMPTS_TRESHOLD)
+        if (this._failedAttempts < FAILED_ATTEMPTS_THRESHOLD)
             return;
 
         const source = new MessageTray.Source({
@@ -38,7 +38,6 @@ export default class LockGuardExtension {
         this._originalKeybindings = { ...Main.wm._allowedKeybindings };
         Main.wm._allowedKeybindings = {};
 
-        Main.panel.statusArea.dateMenu?.hide();
         Main.panel.statusArea.quickSettings?.hide();
 
         this._failedAttempts = 0;
@@ -57,7 +56,6 @@ export default class LockGuardExtension {
         Main.wm._allowedKeybindings = this._originalKeybindings;
         this._originalKeybindings = null;
 
-        Main.panel.statusArea.dateMenu?.show();
         Main.panel.statusArea.quickSettings?.show();
 
         if (this._originalEnsureAuthPrompt) {
@@ -65,6 +63,7 @@ export default class LockGuardExtension {
             this._originalEnsureAuthPrompt = null;
         }
         Main.screenShield._dialog._authPrompt?._userVerifier?.disconnectObject(this);
+
         this._notifyFailedAttempts();
         this._failedAttempts = null;
     }

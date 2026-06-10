@@ -2,7 +2,6 @@
   "name": "Lock Guard",
   "description": "Enhanced lock screen security.\n\nHide date.\nHide quick settings.\nInhibit keybindings.\nWarn about 3+ failed login attempts.",
   "shell-version": [
-    "49",
     "50"
   ],
   "uuid": "lock-guard@fthx",
